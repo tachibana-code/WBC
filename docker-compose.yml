@@ -1,0 +1,38 @@
+services:
+  # -----------------------------------
+  # Web/PHP アプリケーションサービス
+  # -----------------------------------
+  web:
+    build: . # ← ここでカレントディレクトリの Dockerfile を参照
+    ports:
+      - "8080:80" # ホストの8080ポートをコンテナの80ポートにマッピング
+    volumes:
+      # ホスト側のファイルをコンテナにマウントし、開発中にコードを編集してもすぐに反映されるようにする
+      - .:/var/www/html/
+    environment:
+      # データベース接続情報を環境変数として設定（PHPコードで利用可能）
+      MARIADB_HOST: db
+      MARIADB_USER: user
+      MARIADB_PASSWORD: password123
+      MARIADB_DATABASE: wbc_db
+    depends_on:
+      - db # データベースが起動するまで待つ
+
+  # -----------------------------------
+  # MariaDB データベースサービス
+  # -----------------------------------
+  db:
+    image: mariadb:10.6 # 安定版のMariaDBイメージを使用
+    volumes:
+      # データベースデータを永続化するためのボリューム
+      - db_data:/var/lib/mysql
+    environment:
+      # データベースの初期設定
+      MYSQL_ROOT_PASSWORD: root_password_secure
+      MYSQL_USER: user # webサービスと同じユーザー名
+      MYSQL_PASSWORD: password123 # webサービスと同じパスワード
+      MYSQL_DATABASE: wbc_db # webサービスと同じデータベース名
+    
+# 永続化ボリュームの定義
+volumes:
+  db_data: {}

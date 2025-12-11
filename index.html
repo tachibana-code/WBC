@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WBC 2026 優勝予想</title>
+    <style>
+        /* 基本設定 */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* ヘッダー */
+        header {
+            background-color: #002D72;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin-bottom: 5px;
+        }
+
+        /* メインコンテナ */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        /* チームカード (中略：前版と同一) */
+        .team-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 0; 
+            width: 250px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            overflow: hidden;
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .team-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .card-content {
+            padding: 15px 25px 25px;
+        }
+
+        .team-name {
+            color: #cc0000;
+            font-size: 1.8em;
+            margin-top: 0;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .team-info {
+            font-size: 0.9em;
+            height: 3.6em;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .vote-button {
+            background-color: #ffcc00;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .vote-button:hover {
+            background-color: #e6b800;
+        }
+
+        .vote-display {
+            font-weight: bold;
+            color: #002D72;
+            margin-top: 5px;
+            font-size: 1.1em;
+        }
+        
+        /* グラフとコメントの全体コンテナ */
+        .results-section {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            max-width: 1200px;
+            margin: 40px auto;
+            gap: 30px;
+            padding: 0 20px;
+        }
+        
+        /* グラフコンテナのスタイル */
+        .chart-container {
+            padding: 20px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            flex: 1; 
+            min-width: 300px; 
+        }
+
+        /* コメントエリア全体のコンテナ */
+        .comment-area-wrapper {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 垂直方向の中央揃え */
+        }
+
+        /* キャラクター画像 */
+        #comment-character {
+            width: 120px;
+            height: auto;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 15px;
+            border: 4px solid #fff;
+            background-color: #fff;
+        }
+
+        /* コメント吹き出しのスタイル */
+        .comment-box {
+            position: relative;
+            background: #e0f7fa;
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid #00bcd4;
+            font-size: 1.1em;
+            line-height: 1.5;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 吹き出しの三角部分（画像へ向ける） */
+        .comment-box::before {
+            content: '';
+            position: absolute;
+            bottom: -10px; /* 下部から出る */
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px 10px 0 10px;
+            border-style: solid;
+            border-color: #00bcd4 transparent transparent transparent;
+        }
+        .comment-box::after {
+            content: '';
+            position: absolute;
+            bottom: -8px; /* 1px手前 */
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px 10px 0 10px;
+            border-style: solid;
+            border-color: #e0f7fa transparent transparent transparent;
+        }
+
+
+        /* フッター (中略：前版と同一) */
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+            background-color: #333;
+            color: white;
+            font-size: 0.8em;
+        }
+
+        /* レスポンシブ対応 */
+        @media (max-width: 768px) {
+            .results-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            .chart-container, .comment-area-wrapper {
+                width: 100%;
+                max-width: 600px;
+                margin-bottom: 20px;
+            }
+            .comment-area-wrapper {
+                flex-direction: row; /* 狭い画面では画像を横に配置 */
+                justify-content: center;
+                gap: 15px;
+            }
+            #comment-character {
+                order: 2; /* 画像を右側に移動 */
+            }
+            .comment-box {
+                order: 1; /* 吹き出しを左側に移動 */
+            }
+            .comment-box::before, .comment-box::after {
+                /* 三角の向きを右側へ調整 */
+                top: 50%;
+                bottom: auto;
+                right: -20px;
+                left: auto;
+                transform: translateY(-50%);
+                border-width: 10px 0 10px 10px;
+                border-color: transparent transparent transparent #00bcd4;
+            }
+            .comment-box::after {
+                right: -18px;
+                border-color: transparent transparent transparent #e0f7fa;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>⚾ 2026 WBC 優勝候補予想 🏆</h1>
+        <p>あなたの優勝予想に投票しよう！</p>
+    </header>
+
+    <main class="container">
+        <div class="team-card" id="team-japan">
+            <img class="team-image" src="https://img.mlbstatic.com/mlb-images/image/upload/t_16x9/t_w1536/mlb/nsyhmtrrvjaf7yzyjna3.jpg" alt="日本代表">
+            <div class="card-content">
+                <h2 class="team-name">日本 🇯🇵</h2>
+                <p class="team-info">前回王者。投手陣・野手陣ともにタレント揃い。</p>
+                <button class="vote-button" onclick="castVote('japan')">優勝予想！</button>
+                <div class="vote-display">
+                    投票数: <span id="vote-count-japan" class="vote-count">0</span> 票
+                </div>
+            </div>
+        </div>
+
+        <div class="team-card" id="team-usa">
+            <img class="team-image" src="https://www.mlb.jp/wp-content/uploads/2025/04/01-12.jpg" alt="アメリカ代表">
+            <div class="card-content">
+                <h2 class="team-name">アメリカ合衆国 🇺🇸</h2>
+                <p class="team-info">MLBの現役トップ選手を擁する「ドリームチーム」。</p>
+                <button class="vote-button" onclick="castVote('usa')">優勝予想！</button>
+                <div class="vote-display">
+                    投票数: <span id="vote-count-usa" class="vote-count">0</span> 票
+                </div>
+            </div>
+        </div>
+
+        <div class="team-card" id="team-dr">
+            <img class="team-image" src="http://www.wbc2017.jp/img/news/article/20170317_1_1-4.jpg" alt="ドミニカ共和国代表">
+            <div class="card-content">
+                <h2 class="team-name">ドミニカ共和国 🇩🇴</h2>
+                <p class="team-info">圧倒的な強打者が揃う。2013年王者。</p>
+                <button class="vote-button" onclick="castVote('dr')">優勝予想！</button>
+                <div class="vote-display">
+                    投票数: <span id="vote-count-dr" class="vote-count">0</span> 票
+                </div>
+            </div>
+        </div>
+        
+        <div class="team-card" id="team-mexico">
+            <img class="team-image" src="https://the-ans.jp/wp-content/uploads/2023/03/21100420/20230321_Arozarena.jpg" alt="メキシコ代表">
+            <div class="card-content">
+                <h2 class="team-name">メキシコ 🇲🇽</h2>
+                <p class="team-info">前回大会ベスト4。若手とベテランが融合した強力チーム。</p>
+                <button class="vote-button" onclick="castVote('mexico')">優勝予想！</button>
+                <div class="vote-display">
+                    投票数: <span id="vote-count-mexico" class="vote-count">0</span> 票
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <div class="results-section">
+        <div class="chart-container">
+            <h2 style="text-align: center; color: #002D72;">現在の投票率</h2>
+            <canvas id="voteChart" width="400" height="400"></canvas>
+        </div>
+
+        <div class="comment-area-wrapper">
+            <h2 style="text-align: center; color: #002D72; margin-bottom: 0;">🗳️ 投票分析コメント</h2>
+            <img id="comment-character" src="https://is4-ssl.mzstatic.com/image/thumb/zZhCS7-q-uATdyxjRUF4Gg/1200x675.jpg" alt="野球のキャラクター">
+            
+            <div id="analysis-comment" class="comment-box">
+                最新の投票データを取得中です...
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 WBC Prediction Site</p>
+    </footer>
+
+    <script>
+        let votes = {
+            japan: 0,
+            usa: 0,
+            dr: 0,
+            mexico: 0
+        };
+
+        const teamColors = {
+            'japan': '#FF0000',
+            'usa': '#002868',
+            'dr': '#002D72',
+            'mexico': '#006341'
+        };
+
+        const commentElement = document.getElementById('analysis-comment');
+
+        function getTeamName(teamId) {
+            const card = document.getElementById(`team-${teamId}`); 
+            return card ? card.querySelector('.team-name').textContent.trim() : teamId;
+        }
+        
+        /**
+         * サーバーから分析コメントを取得し、表示を更新する関数
+         */
+        function fetchComment(currentVotes) {
+            const maxVoteTeamId = Object.keys(currentVotes).reduce((a, b) => currentVotes[a] > currentVotes[b] ? a : b, 'japan');
+            
+            // API呼び出し (実装が必要です)
+            fetch(`get_comment.php?votes=${JSON.stringify(currentVotes)}`)
+            .then(response => {
+                if (!response.ok) throw new Error('コメントAPI応答エラー');
+                return response.json();
+            })
+            .then(data => {
+                commentElement.innerHTML = data.comment;
+            })
+            .catch(error => {
+                console.error('コメント取得に失敗:', error);
+                // エラー時のフォールバックコメント（イラストの口調に合わせた例）
+                commentElement.innerHTML = `「**おう！**今、最もアツい予想は**${getTeamName(maxVoteTeamId)}**だぜ！このままリードを保てるか注目だな！」`;
+            });
+        }
+
+
+        /**
+         * サーバーから最新の投票データを取得して表示を更新する関数
+         */
+        function fetchVotes() {
+            fetch('get_votes.php')
+            .then(response => {
+                if (!response.ok) throw new Error('投票データAPI応答エラー');
+                return response.json();
+            })
+            .then(data => {
+                votes = data; 
+                let totalVotes = 0;
+                for (const teamId in votes) {
+                    const count = votes[teamId];
+                    totalVotes += count;
+                    const countElement = document.getElementById(`vote-count-${teamId}`);
+                    if (countElement) {
+                        countElement.textContent = count;
+                    }
+                }
+                
+                drawPieChart(votes, totalVotes); 
+                fetchComment(votes); 
+            })
+            .catch(error => {
+                console.error('投票データ取得に失敗:', error);
+                commentElement.innerHTML = '「ちっ、サーバーとの通信が切れたみてぇだ... データが取得できねぇ！」';
+            });
+        }
+
+        /**
+         * 円グラフを描画する関数 (Canvas APIを使用)
+         */
+        function drawPieChart(votes, totalVotes) {
+            const canvas = document.getElementById('voteChart');
+            if (!canvas || totalVotes === 0) {
+                if (canvas) canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+                return;
+            }
+
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = Math.min(centerX, centerY) * 0.8;
+            let currentAngle = 0;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (const teamId in votes) {
+                const count = votes[teamId];
+                const percentage = count / totalVotes;
+                const sliceAngle = percentage * 2 * Math.PI;
+
+                ctx.fillStyle = teamColors[teamId] || '#cccccc';
+                
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+                ctx.closePath();
+                ctx.fill();
+
+                if (percentage > 0.05) {
+                    const labelAngle = currentAngle + sliceAngle / 2;
+                    const labelRadius = radius * 0.7;
+                    const x = centerX + Math.cos(labelAngle) * labelRadius;
+                    const y = centerY + Math.sin(labelAngle) * labelRadius;
+                    
+                    ctx.fillStyle = 'white'; 
+                    ctx.font = 'bold 14px Arial';
+                    ctx.textAlign = 'center';
+                    
+                    const labelText = `${getTeamName(teamId).split(' ')[0]} ${Math.round(percentage * 100)}%`;
+                    ctx.fillText(labelText, x, y);
+                }
+
+                currentAngle += sliceAngle;
+            }
+        }
+
+        /**
+         * 投票を受け付け、サーバーに送信する関数
+         */
+        function castVote(teamId) {
+            fetch('vote.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `teamId=${teamId}`
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('投票APIエラー');
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    fetchVotes(); 
+                } else {
+                    alert(`投票に失敗しました: ${data.message}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('投票処理中にエラーが発生しました。サーバーとの接続を確認してください。');
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchVotes);
+        setInterval(fetchVotes, 3000);
+    </script>
+</body>
+</html>
